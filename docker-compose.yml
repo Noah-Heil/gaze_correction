@@ -14,9 +14,13 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
+      # This acts as a temporary storage area for data needed by the 
+      # X11 server to manage the graphical user interface, 
+      # including socket connections for applications to interact with the display.
       - /tmp/.X11-unix:/tmp/.X11-unix:ro
       - .:/app
     devices:
+      # This is usually how you would mount the first available webcam device into a container
       - "/dev/video0:/dev/video0"
     working_dir: /app
     deploy:
@@ -27,3 +31,8 @@ services:
               count: 1
               capabilities: [gpu]
     privileged: true  # Optional, use only if necessary
+
+
+# Looks like the docker compose is used to mount and expose the gpu to the container
+# Make sure you have the nvidia-container-toolkit installed and configured
+# https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html

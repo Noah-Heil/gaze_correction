@@ -51,8 +51,13 @@ RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/
 # Copy the application code
 COPY . /app
 
+# set up the virtual env
+# ENV VIRTUAL_ENV=/app/.env
+# RUN python -m venv .env
+# ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
 # Install Python dependencies
-# RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt
 
 CMD ["bash"]
 
