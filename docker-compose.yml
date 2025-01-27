@@ -1,18 +1,17 @@
-version: "3.8"
-
 services:
   test:
-    image: sulfurheron/nvidia-cuda:10.0-cudnn7-runtime-ubuntu16.04-2019-07-29
-    runtime: nvidia
+    # image: sulfurheron/nvidia-cuda:10.0-cudnn7-runtime-ubuntu16.04-2019-07-29
+    # runtime: nvidia
+    build:
+      context: .
+      dockerfile: Dockerfile
     command: tail -f /dev/null  # Keeps the container running
+    working_dir: /app
     environment:
       - COLUMNS=`tput cols`
       - LINES=`tput lines`
       - DISPLAY=$DISPLAY
       - XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR
-    build:
-      context: .
-      dockerfile: Dockerfile
     volumes:
       # This acts as a temporary storage area for data needed by the 
       # X11 server to manage the graphical user interface, 
@@ -22,7 +21,6 @@ services:
     devices:
       # This is usually how you would mount the first available webcam device into a container
       - "/dev/video0:/dev/video0"
-    working_dir: /app
     deploy:
       resources:
         reservations:
@@ -33,6 +31,6 @@ services:
     privileged: true  # Optional, use only if necessary
 
 
-# Looks like the docker compose is used to mount and expose the gpu to the container
+# Looks like the docker compose is used to mount and `expose the gpu to the container
 # Make sure you have the nvidia-container-toolkit installed and configured
 # https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
